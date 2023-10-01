@@ -86,6 +86,7 @@ contract CounterTest is Test {
      * Но чтобы сделать наше тестирование более проработанным,
      * в качестве аргумента можно добавить текст ошибки
      */
+
     function testRevertIfCallerIsNotOwner() public {
         vm.expectRevert("Ownable: caller is not the owner");
         counter.setNumber(100);
@@ -122,5 +123,94 @@ contract CounterTest is Test {
         vm.expectEmit(address(counter));
         emit Incremented(1);
         counter.increment();
+    }
+
+    /**
+     * Используем метод vm.deal()
+     * которы устанавливает
+     * соответсвующий баланс на соответсвующий адрес
+     *
+     * Метод deal() может также принимать три параметра
+     * (address token, address to, uint256 give)
+     * В таком случае мы отправим не нативную валюту,
+     * а токены соответвующего адреса
+     */
+    function testSendEthWithDeal() public {
+        address user = makeAddr("user");
+        //Устанавливаем на user баланс со значением 1 ether
+        vm.deal(user, 1 ether);
+        assertEq(user.balance, 1 ether);
+
+        //Отправляем на адрес контракта 1 ether от имени user и сверяем балансы
+        vm.startPrank(user);
+        (bool success,) = address(counter).call{value: 1 ether}("");
+        vm.stopPrank();
+
+        assertEq(success, true);
+        assertEq(address(counter).balance, 1 ether);
+        assertEq(user.balance, 0);
+    }
+
+    /**
+     * метод hoax() или аналогичный startHoax()
+     * объединяет в себе методы deal() и prank()
+     * т.е. метод изменяет баланс выбранного адреса
+     * и устанавливает его инициатором на ближайший вызов
+     */
+    function testSendEthWithHoax() public {
+        address user = makeAddr("user");
+        //Устанавливаем на user баланс со значением 1 ether и вызываем prank()
+        hoax(user, 1 ether);
+        (bool success,) = address(counter).call{value: 1 ether}("");
+
+        assertEq(success, true);
+        assertEq(address(counter).balance, 1 ether);
+        assertEq(user.balance, 0);
+    }
+
+    /**
+     * Проверяем временное ограничение, которое должно сработать
+     * Если между последним и настоящим переводом прошло меньше
+     * 1 дня
+     */
+    function testSendEth2timesWithoutWaiting() public {
+        address user = makeAddr("user");
+        //Устанавливаем на user баланс со значением 1 ether и вызываем prank()
+        hoax(user, 1 ether);
+        (bool success1,) = address(counter).call{value: 1 ether}("");
+
+        hoax(user, 1 ether);
+        (bool success2,) = address(counter).call{value: 1 ether}("");
+
+        assertEq(success1, true);
+        //Второй вызов должен закончится ошибкой
+        assertEq(success2, false);
+        assertEq(address(counter).balance, 1 ether);
+        assertEq(user.balance, 1 ether);
+    }
+
+    /**
+     * Специальный метод vm.warp() позволяет управлять временем
+     * засчёт изменения параметра block.timestamp
+     * В данном примере мы меняем время последнего блока
+     * на 1 день вперёд и ещё раз делаем вызов, который
+     * на этот раз должен пройти успешно
+     */
+    function testSendEth2timesWithWrap() public {
+        address user = makeAddr("user");
+
+        hoax(user, 1 ether);
+        (bool success1,) = address(counter).call{value: 1 ether}("");
+
+        //Устанавливаем значение block.timestamp
+        vm.warp(block.timestamp + 1 days);
+        hoax(user, 1 ether);
+        (bool success2,) = address(counter).call{value: 1 ether}("");
+
+        assertEq(success1, true);
+        //Второй вызов должен пройти успешно
+        assertEq(success2, true);
+        assertEq(address(counter).balance, 2 ether);
+        assertEq(user.balance, 0);
     }
 }

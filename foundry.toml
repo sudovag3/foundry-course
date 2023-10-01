@@ -2,6 +2,11 @@
 src = "src"
 out = "out"
 libs = ["lib"]
-remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"]
+remappings = [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "forge-std/=lib/forge-std/src/",
+    # При изменении веток почему-то форматтер перестал подхватывать forge-std, пришлось внести в ремаппинг
+    # вручную
+]
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
