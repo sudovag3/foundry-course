@@ -6,7 +6,7 @@
 
 [Статья](https://habr.com/ru/articles/764576/)
 
-[Код](https://github.com/sudovag3/foundry-middle-part1/tree/part-1)
+[Код](https://github.com/sudovag3/foundry-course/tree/part-1)
 
 
 ### Часть 2
@@ -15,4 +15,4 @@ Aвтоматическое форматирование кода (forge fmt) о
 
 [Статья](https://habr.com/ru/articles/764668/)
 
-[Код](https://github.com/sudovag3/foundry-middle-part1/tree/part-2)
+[Код](https://github.com/sudovag3/foundry-course/tree/part-2)
