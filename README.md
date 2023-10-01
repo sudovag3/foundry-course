@@ -1,2 +1,2 @@
-## Тестирование в Foundry (Часть 1)
-[Приятного чтения](https://habr.com/ru/articles/764576/)
+## Тестирование в Foundry (Часть 2)
+[Приятного чтения](https://habr.com/ru/articles/764668/)
