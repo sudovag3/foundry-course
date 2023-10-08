@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Test} from "forge-std/Test.sol";
-//Обязательный контракт для написание инвариантных тестов
+//Обязательный контракт для написания инвариантных тестов
 //Наследуем его от нашего тест-контракта
 import {StdInvariant} from "forge-std/StdInvariant.sol";
 import {Counter} from "../src/Counter.sol";
