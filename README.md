@@ -25,3 +25,11 @@ Aвтоматическое форматирование кода (forge fmt) о
 [Статья](https://habr.com/ru/articles/765266/)
 
 [Код](https://github.com/sudovag3/foundry-course/tree/part-3)
+
+### Часть 4
+
+Работа с cast, fuzz-тестирование
+
+[Статья](https://habr.com/ru/articles/766078/)
+
+[Код](https://github.com/sudovag3/foundry-course/tree/part-4)
