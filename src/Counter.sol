@@ -4,8 +4,6 @@ pragma solidity ^0.8.13;
 contract Counter {
     uint256 testVar;
 
-    constructor() {}
-
     /**
      * Данная функция возвращает различные значения в
      * зависимости от значений аргумента
@@ -21,18 +19,19 @@ contract Counter {
      *
      * @param x Обрабатываемое число
      */
-    function NeverReturnZero(uint256 x) public pure returns (uint256) {
+    function neverReturnZero(uint256 x) public pure returns (uint256) {
         if (x == 1) {
             return 123 - x;
-        } else if (x % 10 == 0) {
+        } else if (x % 10 == 0 && x != 0) {
             //Здесь всегда будет возвращаться ноль
             return (x % (78123 - 78113));
         } else if (x % 123 == 1) {
             return 321;
         } else {
-            return 0;
+            return 1;
         }
     }
+
     /**
      * Данная функцию уже не получится протестировать с помощью
      * state-less fuzz тестирования
@@ -47,7 +46,7 @@ contract Counter {
      * @param x Обрабатываемое число
      */
 
-    function NeverReturnZero2(uint256 x) public returns (uint256) {
+    function neverReturnZero2(uint256 x) public returns (uint256) {
         //
         if (x < 10) {
             revert();
@@ -65,8 +64,4 @@ contract Counter {
             return 1;
         }
     }
-
-    function increment() public {}
-
-    receive() external payable {}
 }
